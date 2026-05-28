@@ -1,0 +1,96 @@
+============================================================
+[Step 1] Load data and extract attack records
+============================================================
+  Full data: 80,688 rows x 182 cols
+  Attack data: 20,172 rows x 182 cols
+
+  Attack category distribution:
+    Generic               5,519
+    Exploits              5,459
+    Fuzzers               3,995
+    Reconnaissance        2,719
+    DoS                   1,187
+    Backdoor                501
+    Analysis                490
+    Shellcode               302
+
+  Number of categories: 8
+
+============================================================
+[Step 2] PCA dimensionality reduction
+============================================================
+  Original dim: 182
+  log1p transform applied (reduces outlier effect)
+  After PCA: 20 dims (fixed)
+  Cumulative explained variance: 0.9970
+
+============================================================
+[Step 3] Find optimal k (k=2 to 15)
+============================================================
+  Silhouette sample size: 5,000
+
+     k |         inertia |   silhouette
+  ---- | --------------- | ------------
+     2 |         169,430 |       0.6790
+     3 |         112,964 |       0.6220
+     4 |          92,319 |       0.4837
+     5 |          77,935 |       0.4740
+     6 |          66,559 |       0.4901
+     7 |          61,571 |       0.4292
+     8 |          57,326 |       0.4187
+     9 |          54,330 |       0.4019
+    10 |          51,306 |       0.3466
+    11 |          48,580 |       0.3214
+    12 |          46,169 |       0.3256
+    13 |          43,706 |       0.3230
+    14 |          41,916 |       0.3258
+    15 |          40,703 |       0.2961
+
+  -> Best silhouette k: 2 (score: 0.6790)
+  -> Domain-based k: 8 (number of real attack categories)
+
+============================================================
+[Step 4] Final K-Means clustering (k=8)
+============================================================
+  Cluster size distribution:
+    Cluster 0: 7,001
+    Cluster 1: 687
+    Cluster 2: 344
+    Cluster 3: 1,388
+    Cluster 4: 1,422
+    Cluster 5: 1,999
+    Cluster 6: 3,074
+    Cluster 7: 4,257
+
+============================================================
+[Step 5] Evaluation - compare with real attack categories
+============================================================
+  ARI (Adjusted Rand Index):           0.1826
+  NMI (Normalized Mutual Information): 0.2872
+
+  Cross-tabulation (real attack type distribution per cluster):
+AttackCategory  Analysis  Backdoor  DoS  Exploits  Fuzzers  Generic  Reconnaissance  Shellcode
+Cluster
+0                     94        77  478      2548     1999      303            1353        149
+1                      4         6   36        68      415      111               6         41
+2                     28        42   50        43       95       46              40          0
+3                      1         2  117       837      344       86               1          0
+4                     14        17   18        15      207     1133              18          0
+5                      2         1   90      1560       93      242               8          3
+6                      0         0    0         0        0     3074               0          0
+7                    347       356  398       388      842      524            1293        109
+
+============================================================
+[Step 6] Save plots
+============================================================
+  -> 01_elbow_curve.png saved
+  -> 02_silhouette_score.png saved
+  -> 03_pca_2d_scatter.png saved
+  -> 04_crosstab_heatmap.png saved
+
+============================================================
+Clustering done
+============================================================
+  Final k: 8
+  ARI: 0.1826 | NMI: 0.2872
+  Output files: 01~04*.png, clustering_report.txt

@@ -22,7 +22,7 @@ warnings.filterwarnings('ignore')
 # ============================================================
 # 설정
 # ============================================================
-FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'UNSW-NB15_4.csv')
+FILE_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'data', 'UNSW-NB15_4.csv')
 RANDOM_STATE = 42
 TEST_SIZE    = 0.2
 US_RATIO     = 3       # 언더샘플링 정상:공격 비율

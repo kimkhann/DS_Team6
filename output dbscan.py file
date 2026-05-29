@@ -1,0 +1,96 @@
+============================================================
+[Step 1] Load data and extract attack records
+============================================================
+  Full data: 80,688 rows x 182 cols
+  Attack data: 20,172 rows x 182 cols
+
+  Attack category distribution:
+    Generic               5,519
+    Exploits              5,459
+    Fuzzers               3,995
+    Reconnaissance        2,719
+    DoS                   1,187
+    Backdoor                501
+    Analysis                490
+    Shellcode               302
+
+  Number of categories: 8
+
+============================================================
+[Step 2] PCA dimensionality reduction
+============================================================
+  Original dim: 182
+  log1p transform applied (reduces outlier effect)
+  After PCA: 20 dims (fixed)
+  Cumulative explained variance: 0.9970
+
+============================================================
+[Step 3] Find eps (k-distance graph + eps sweep)
+============================================================
+  min_samples = 40
+  k-distance range: 0.000 ~ 5.162
+
+     eps |  clusters |    noise |  noise %
+  ------ | --------- | -------- | --------
+     1.0 |         7 |    1,934 |     9.6%
+     1.5 |         6 |      637 |     3.2%
+     2.0 |         4 |      308 |     1.5%
+     2.5 |         3 |      157 |     0.8%
+     3.0 |         2 |       82 |     0.4%
+     3.5 |         2 |       14 |     0.1%
+     4.0 |         2 |        0 |     0.0%
+
+  -> Selected FINAL_EPS = 1.0
+
+============================================================
+[Step 4] Final DBSCAN clustering (eps=1.0, min_samples=40)
+============================================================
+  Number of clusters found: 7
+  Noise points (label -1): 1,934 (9.6%)
+
+  Cluster size distribution:
+    Noise: 1,934
+    Cluster 0: 5,699
+    Cluster 1: 9,000
+    Cluster 2: 1,853
+    Cluster 3: 1,485
+    Cluster 4: 116
+    Cluster 5: 45
+    Cluster 6: 40
+
+============================================================
+[Step 5] Evaluation - compare with real attack categories
+============================================================
+  [All points, noise as its own group]
+    ARI: 0.1855
+    NMI: 0.2302
+  [Excluding noise: 18,238 points kept]
+    ARI: 0.2039
+    NMI: 0.2626
+  Silhouette (non-noise, sampled): 0.2476
+
+  Cross-tabulation (real attack type distribution per cluster):
+AttackCategory  Analysis  Backdoor  DoS  Exploits  Fuzzers  Generic  Reconnaissance  Shellcode
+Cluster
+-1                    60        56  198       679      571      239             120         11
+ 0                     2        52  248      1581     2111      248            1312        145
+ 1                   362       377  430       442     1158     4813            1274        144
+ 2                    66         9  226      1473        3       74               2          0
+ 3                     0         0   75      1265        3      142               0          0
+ 4                     0         0    0         0      116        0               0          0
+ 5                     0         1    1         2       31        1               7          2
+ 6                     0         6    9        17        2        2               4          0
+
+============================================================
+[Step 6] Save plots
+============================================================
+  -> dbscan_01_k_distance.png saved
+  -> dbscan_02_pca_2d_scatter.png saved
+  -> dbscan_03_crosstab_heatmap.png saved
+
+============================================================
+DBSCAN clustering done
+============================================================
+  eps: 1.0 | min_samples: 40
+  ARI (all): 0.1855 | NMI (all): 0.2302
+  Output files: dbscan_01~03*.png, dbscan_report.txt

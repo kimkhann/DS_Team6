@@ -9,87 +9,88 @@
 
 [Step 2-1] 5-Fold CV 평가
 Fold별 F1:
-[0.96888347 0.96550043 0.96723907 0.96943018 0.97072457]
+[0.96860225 0.96630303 0.96744524 0.96951294 0.96930729]
+최고 F1: 0.9682341499420184
+표준편차: 0.0012
 
-평균 CV F1: 0.9684
-표준편차: 0.0018
-
-[Step 2] Random Forest 모델 생성
+[Step 3] Random Forest 모델 생성
+  모델 파라미터 설정 완료
   n_estimators: 100
-  max_depth: None
-  random_state: 42
-  n_jobs: -1
+  max_depth: 20
+  min_samples_leaf: 1
+  min_samples_split: 5
+  max_features: sqrt
 
-[Step 3] Random Forest 모델 학습
+[Step 4] Random Forest 모델 학습
   모델 학습 완료
 
-[Step 4] threshold=0.5
+[Step 5] threshold=0.5
 예측 완료: 61,336
 
-[Step 5] 모델 성능 평가
-  Accuracy : 0.9831
-  Precision: 0.8402
-  Recall : 0.9814
-  F1-score : 0.9053
+[Step 6] 모델 성능 평가
+  Accuracy : 0.9820
+  Precision: 0.8267
+  Recall : 0.9877
+  F1-score : 0.9001
 
 [Classification Report]
               precision    recall  f1-score   support
 
-      Normal     0.9983    0.9833    0.9907     56293
-      Attack     0.8402    0.9814    0.9053      5043
+      Normal     0.9989    0.9815    0.9901     56293
+      Attack     0.8267    0.9877    0.9001      5043
 
-    accuracy                         0.9831     61336
-   macro avg     0.9193    0.9823    0.9480     61336
-weighted avg     0.9853    0.9831    0.9837     61336
+    accuracy                         0.9820     61336
+   macro avg     0.9128    0.9846    0.9451     61336
+weighted avg     0.9847    0.9820    0.9827     61336
 
 
-[Step 6] Confusion Matrix 생성
+[Step 7] Confusion Matrix 생성
                Pred_Normal  Pred_Attack
-Actual_Normal        55352          941
-Actual_Attack           94         4949
+Actual_Normal        55249         1044
+Actual_Attack           62         4981
 
-[Step 7] Feature Importance 추출
+[Step 8] Feature Importance 추출
 
 [Top 20 Feature Importance]
              feature  importance
-0               sttl    0.175298
-1       ct_state_ttl    0.148956
-2               dttl    0.092948
-3              dload    0.074599
-4            dmeansz    0.057523
-5              sload    0.053552
-6          state_INT    0.043306
-7                dur    0.039559
-8             sbytes    0.037112
-9            smeansz    0.036280
-10             dpkts    0.035010
-11              sjit    0.024426
-12  ct_dst_sport_ltm    0.019446
-13              djit    0.018451
-14        ct_dst_ltm    0.017647
-15        ct_srv_dst    0.016503
-16    ct_dst_src_ltm    0.014982
-17             spkts    0.014724
-18        ct_srv_src    0.012827
-19        ct_src_ltm    0.012392
+0               sttl    0.204147
+1       ct_state_ttl    0.168247
+2               dttl    0.087203
+3              dload    0.078472
+4            dmeansz    0.059587
+5              sload    0.050449
+6          state_INT    0.041979
+7              dpkts    0.036957
+8            smeansz    0.033381
+9             sbytes    0.029703
+10               dur    0.027077
+11              sjit    0.022865
+12        ct_dst_ltm    0.022059
+13        ct_srv_dst    0.015574
+14              djit    0.014398
+15  ct_dst_sport_ltm    0.014380
+16        ct_srv_src    0.012830
+17    ct_dst_src_ltm    0.012584
+18             spkts    0.011670
+19        ct_src_ltm    0.008958
 
 ============================================================
 Random Forest 분류 완료
-5-Fold CV F1: 0.9684
+5-Fold CV F1: 0.9682
 Threshold: 0.5
-Accuracy : 0.9831
-Precision: 0.8402
-Recall : 0.9814
-F1-score : 0.9053
+Accuracy : 0.9820
+Precision: 0.8267
+Recall : 0.9877
+F1-score : 0.9001
 ============================================================
 
-[Step 8] 결과 저장
+결과 저장
 
               precision    recall  f1-score   support
 
-      Normal     0.9983    0.9833    0.9907     56293
-      Attack     0.8402    0.9814    0.9053      5043
+      Normal     0.9989    0.9815    0.9901     56293
+      Attack     0.8267    0.9877    0.9001      5043
 
-    accuracy                         0.9831     61336
-   macro avg     0.9193    0.9823    0.9480     61336
-weighted avg     0.9853    0.9831    0.9837     61336
+    accuracy                         0.9820     61336
+   macro avg     0.9128    0.9846    0.9451     61336
+weighted avg     0.9847    0.9820    0.9827     61336

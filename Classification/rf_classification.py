@@ -50,9 +50,11 @@ warnings.filterwarnings("ignore")
 
 RANDOM_STATE = 42
 
-# Random Forest 기본 설정
+# GridSearchCV로 찾은 최적 파라미터
 N_ESTIMATORS = 100
-MAX_DEPTH = None
+MAX_DEPTH = 20
+MIN_SAMPLES_LEAF = 1
+MIN_SAMPLES_SPLIT = 5
 N_JOBS = -1
 
 # 현재 파이썬 파일 기준 경로
@@ -122,7 +124,9 @@ def step2_cv_evaluate(X_train, y_train):
     rf = RandomForestClassifier(
         n_estimators=N_ESTIMATORS,
         max_depth=MAX_DEPTH,
-        max_features='sqrt',
+        min_samples_leaf=MIN_SAMPLES_LEAF,
+        min_samples_split=MIN_SAMPLES_SPLIT,
+        max_features="sqrt",
         random_state=RANDOM_STATE,
         n_jobs=N_JOBS
     )
@@ -135,8 +139,10 @@ def step2_cv_evaluate(X_train, y_train):
         scoring='f1'
     )
 
+
+
     log(f"Fold별 F1:\n{scores}")
-    log(f"\n평균 CV F1: {scores.mean():.4f}")
+    log(f"최고 F1: {scores.mean():.16f}")
     log(f"표준편차: {scores.std():.4f}")
 
     return scores.mean()
@@ -152,15 +158,19 @@ def step3_create_model():
     model = RandomForestClassifier(
         n_estimators=N_ESTIMATORS,
         max_depth=MAX_DEPTH,
-        max_features='sqrt',
+        min_samples_leaf=MIN_SAMPLES_LEAF,
+        min_samples_split=MIN_SAMPLES_SPLIT,
+        max_features="sqrt",
         random_state=RANDOM_STATE,
         n_jobs=N_JOBS
     )
 
+    log("  모델 파라미터 설정 완료")
     log(f"  n_estimators: {N_ESTIMATORS}")
     log(f"  max_depth: {MAX_DEPTH}")
-    log(f"  random_state: {RANDOM_STATE}")
-    log(f"  n_jobs: {N_JOBS}")
+    log(f"  min_samples_leaf: {MIN_SAMPLES_LEAF}")
+    log(f"  min_samples_split: {MIN_SAMPLES_SPLIT}")
+    log("  max_features: sqrt")
 
     return model
 
